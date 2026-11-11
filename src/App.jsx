@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function Contact() {
+function App() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -211,4 +211,4 @@ function Contact() {
   );
 }
 
-export default Contact;
+export default App;
