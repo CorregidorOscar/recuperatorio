@@ -1,122 +1,221 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { MapPinned } from 'lucide-react';
+import { useState } from 'react';
 
-function App() {
-  const [count, setCount] = useState(0)
+function Contact() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+
+  const [status, setStatus] = useState({
+    sending: false,
+    success: false,
+    error: null,
+  });
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus({ sending: true, success: false, error: null });
+
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    try {
+      const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          service_id: serviceId,
+          template_id: templateId,
+          user_id: publicKey,
+          template_params: {
+            name: formData.name,
+            email: formData.email,
+            message: formData.message,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('No se pudo enviar el mensaje. Verifica la configuración de EmailJS')
+      }
+
+      setStatus({ sending: false, success: true, error: null });
+
+      setFormData({
+        name: '',
+        email: '',
+        message: '',
+      });
+    } catch (err) {
+      setStatus({
+        sending: false,
+        success: false,
+        error: err.message || 'Ocurrio un error al enviar el correo'
+      });
+    }
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+    <section className="max-w-6xl mx-auto px-4 py-10 space-y-8">
+      {/* Encabezado */}
+      <div className="border-b border-dark/10 pb-6">
+        <span className="inline-block bg-primary/10 text-primary font-semibold text-xs uppercase tracking-wider px-3 py-1 rounded-full mb-2">
+          Atención al Interesado
+        </span>
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-dark">
+          Contacto y Ubicación
+        </h1>
+        <p className="text-muted text-sm sm:text-base mt-1 max-w-2xl">
+          Envíanos tu consulta para ponernos en contacto.
+        </p>
+      </div>
+
+      {/* Layout de 2 columnas */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+
+        {/* Formulario de Contacto */}
+        <div className="bg-card p-6 sm:p-8 rounded-2xl border border-dark/10 shadow-xs">
+          <h2 className="text-xl font-bold text-dark mb-1">
+            Envíanos un mensaje
+          </h2>
+          <p className="text-xs text-muted mb-6">
+            Completa el formulario y recibirás respuesta directamente en tu correo electrónico.
           </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
+          {/* Alerta de exito */}
+          {
+            status.success && (
+              <div className="mb-6 p-4 rounded-xl bg-secondary/15 border border-secondary text-dark text-sm">
+                <p className="font-bold">¡Mensaje enviado con éxito!</p>
+                <p className="text-xs text-muted mt-0.5">
+                  Hemos recibido tu consulta en nuestra casilla de correo. Te responderemos a la brevedad.
+                </p>
+              </div>
+            )
+          }
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          {/* Alerta de Error */}
+          {
+            status.error && (
+              <div className="mb-6 p-4 rounded-xl bg-primary/10 border border-primary text-primary text-sm">
+                <p className="font-bold">Error al enviar</p>
+                <p className="text-xs mt-0.5">{status.error}</p>
+              </div>
+            )
+          }
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-semibold text-dark mb-1.5"
+              >
+                Nombre completo *
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Ej. Juan Pérez"
+                className="w-full px-4 py-2.5 rounded-lg bg-surface border border-dark/15 text-dark placeholder:text-muted/60 text-sm focus:outline-none focus:border-primary transition-colors"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-semibold text-dark mb-1.5"
+              >
+                Correo electrónico *
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="tu@correo.com"
+                className="w-full px-4 py-2.5 rounded-lg bg-surface border border-dark/15 text-dark placeholder:text-muted/60 text-sm focus:outline-none focus:border-primary transition-colors"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="message"
+                className="block text-sm font-semibold text-dark mb-1.5"
+              >
+                Mensaje o consulta *
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows="4"
+                required
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Haznos tu consulta"
+                className="w-full px-4 py-2.5 rounded-lg bg-surface border border-dark/15 text-dark placeholder:text-muted/60 text-sm focus:outline-none focus:border-primary transition-colors resize-none"
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              disabled={status.sending}
+              className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 px-6 rounded-lg transition-colors shadow-sm cursor-pointer"
+            >
+              {status.sending ? 'Enviando mensaje...' : 'Enviar Consulta'}
+            </button>
+          </form>
+        </div>
+
+        {/* Mapa Embebido */}
+        <div className="bg-card rounded-2xl border border-dark/10 shadow-xs overflow-hidden flex flex-col">
+          <div className="bg-dark text-surface px-6 py-4 border-b border-white/10">
+            <h2 className="text-lg font-bold">
+              Dirección del Establecimiento
+            </h2>
+            <div className="flex items-center justify-start gap-1 text-xs text-surface/70">
+              <MapPinned size={12} strokeWidth={2} />
+              <p>
+                Plaza Principal 20 de Febrero · Cafayate, Salta
+              </p>
+            </div>
+          </div>
+
+          {/* Iframe de Google Maps */}
+          <div className="w-full h-80 sm:h-96 bg-surface">
+            <iframe
+              title="Ubicación Oficina de Turismo Cafayate"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1791.8995281971852!2d-65.97676403922047!3d-26.072822734878464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x941f31869c3fc507%3A0xb3a1dd81ee936874!2sDirecci%C3%B3n%20de%20Turismo!5e0!3m2!1ses!2sar!4v1793564654260!5m2!1ses!2sar"
+              className="w-full h-full"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
 }
 
-export default App
+export default Contact;
