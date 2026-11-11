@@ -1,1 +1,20 @@
 @import "tailwindcss";
+
+@theme {
+  /* Botones principales, enlaces activos, acentos fuertes */
+  --color-primary: #b84a39;
+  /* Estados :hover, encabezados destacados */
+  --color-primary-dark: #7a2828;
+  /* Detalles en el Navbar, íconos del clima, secundarios */
+  --color-secondary: #d99b26;
+
+  /* Fondo general de las páginas */
+  --color-surface: #faf6f0;
+  /* Blanco para tarjetas */
+  --color-card: #fafafa;
+  /* Fondo del Navbar, Footer y textos principales */
+  --color-dark: #231f1e;
+  /* Texto secundario cálido */
+  --color-muted: #6e655f;
+
+}

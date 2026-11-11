@@ -191,19 +191,13 @@ function Contact() {
             <h2 className="text-lg font-bold">
               Dirección del Establecimiento
             </h2>
-            <div className="flex items-center justify-start gap-1 text-xs text-surface/70">
-              <MapPinned size={12} strokeWidth={2} />
-              <p>
-                Plaza Principal 20 de Febrero · Cafayate, Salta
-              </p>
-            </div>
           </div>
 
           {/* Iframe de Google Maps */}
           <div className="w-full h-80 sm:h-96 bg-surface">
             <iframe
               title="Ubicación Oficina de Turismo Cafayate"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1791.8995281971852!2d-65.97676403922047!3d-26.072822734878464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x941f31869c3fc507%3A0xb3a1dd81ee936874!2sDirecci%C3%B3n%20de%20Turismo!5e0!3m2!1ses!2sar!4v1793564654260!5m2!1ses!2sar"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1811.726952812145!2d-65.40478573467259!3d-24.74562167518301!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x941bc1264c76c971%3A0x5fc7316c3bf2248!2sUPATecO%20-%20Universidad%20Provincial%20de%20Administraci%C3%B3n%2C%20Tecnolog%C3%ADa%20y%20Oficios!5e0!3m2!1ses!2sar!4v1794427375201!5m2!1ses!2sar"
               className="w-full h-full"
               style={{ border: 0 }}
               allowFullScreen
