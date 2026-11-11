@@ -7,7 +7,6 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter basename="/recuperatorio">
       <div className="min-h-screen flex flex-col bg-surface text-dark antialiased">
-        <Navbar />
 
         <main className="flex-1">
           <Routes>
@@ -15,7 +14,6 @@ createRoot(document.getElementById('root')).render(
           </Routes>
         </main>
 
-        <Footer />
       </div>
     </BrowserRouter >
   </StrictMode>,
