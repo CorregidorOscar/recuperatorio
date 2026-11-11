@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter basename="/recuperatorio">
+    {/* <BrowserRouter basename="/recuperatorio">
       <div className="min-h-screen flex flex-col bg-surface text-dark antialiased">
 
         <main className="flex-1">
@@ -16,6 +16,7 @@ createRoot(document.getElementById('root')).render(
         </main>
 
       </div>
-    </BrowserRouter >
+    </BrowserRouter > */}
+    <App />
   </StrictMode>,
 )
